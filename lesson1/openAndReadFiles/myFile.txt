@@ -1,0 +1,3 @@
+hello
+memory
+this is file for test

@@ -1,0 +1,31 @@
+nasm -f elf -o firstProgram.o firstProgram.asm
+ld -m elf_i386 -o firstProgram firstProgram.o
+
+Instruction of working with GDB for assembler:
+1. gdb
+2. layout asm
+3. break _start
+4. run
+5. stepi
+6. info registers eax (or i can show all registers by command: info registers)
+7. info register eflags (look at flags of registers)
+8. x/x adress - look at the value by using adress
+9. x/4x adress - look at the value by using adress (for 4 slots of memory)
+10. x/5s adress - look at as a string
+
+
+work with float format:
+p $xmm0.v4_float[0] - print float
+
+Compiling asm with the supporting C functions:
+ 1. nasm -f elf -o name.o name.asm
+ 2. gcc -no-pie -m32 name.o -o name
+ 3. ./name
+ Compiling asm with own function:
+ 1. nasm -f elf -o name.o name.asm
+ 2. gcc -no-pie -m32 name.o own_program.c -o name
+ 3. ./name
+Just compile gcc code:
+1. nasm -f elf -o name.o name.asm
+2. gcc -no-pie -m32 name.o -o name
+
