@@ -33,12 +33,56 @@ main:
     MOV ss, ax  ; stack segment
 
     MOV sp, 0x7c00 ; stack pointer
+
+    MOV [ebr_drive_number], dl
+    MOV ax, 1
+    MOV cl, 1
+    MOV bx, 0x7E00
+    CALL disk_read
+
     MOV si, os_boot_msg
     CALL print
     HLT
 
 halt:
     JMP halt
+
+; input: LBA index in ax
+; cx [bits 0-5]: sector number
+; cx [bits 6-15]: cylinder
+; dh: head
+lba_to_chs:
+    PUSH ax
+    PUSH dx
+    XOR dx, dx
+    DIV word [bdb_sectors_per_track] ; (LBA % sectors per track) + 1 -> sector
+    ; остаток от деления лежит в dx
+    INC dx
+    MOV cx, dx ; Sector
+    XOR dx, dx
+    ; head: (LBA / sectors_per_track) % number_of_heads
+    ; sylinder: (LBA / sectors_per_track) / number_of_heads
+    ; at the register i store (LBA / sectors_per_track), so i need to divide ax by number_of_heads
+    ; and sylinder will be stored at ax, and head at dx
+    DIV word [bdb_heads]
+    MOV dh, dl ; head
+    MOV ch, al
+    SHL ah, 6
+    OR cl, ah ; cylinder
+
+    POP ax
+    MOV dl, al
+    POP ax
+    RET
+
+disk_read:
+    PUSH ax
+    PUSH bx
+    PUSH cx
+    PUSH dx
+    PUSH di
+
+    CALL lba_to_chs
 
 print:
     PUSH si
