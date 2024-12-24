@@ -1,3 +1,7 @@
 we have two things in operating systems:
     1. bootloader - it gathers info about system (for example info about hardware)
     2. kernel makes a real stuff with system (makes system calls and so on)
+
+qemu-system-i386 -fda build/main.img - load OS from floppy disk
+qemu-system-i386 -hda build/main.img - load OS from hard disk
+qemu-system-i386 -hda build/main.img -s -S - load OS from hard disk in debug mode
