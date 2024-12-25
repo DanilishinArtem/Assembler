@@ -241,9 +241,9 @@ done_print:
     POP si
     RET
 
-os_boot_msg: DB 'Our OS has booted!', 0x0D, 0x0A, 0
+os_boot_msg: DB 'Our bootloader has been booted!', 0x0D, 0x0A, 0
 read_failure DB 'Failed to read disk', 0x0D, 0x0A, 0
-file_kernel_bin DB 'KERNEL BIN'
+file_kernel_bin DB 'KERNEL  BIN'
 msg_kernel_not_find DB 'KERNEL.BIN not found!'
 kernel_cluster DW 0
 
